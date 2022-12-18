@@ -30,7 +30,9 @@ bool max_water_lvl_error = false;
 // СКЕТЧ РАБОТАЕТ, КАК С МОДУЛЕМ DHT-11, ТАК И С МОДУЛЕМ DHT-22.
 void setup() {
   Serial.begin(9600);  // Инициируем передачу данных в монитор последовательного порта, на скорости 9600 бод
-  delay(1000);         // Приостанавливаем выполнение скетча на 1 секунду, для перехода датчика в активное состояние
+  delay(1000);// Приостанавливаем выполнение скетча на 1 секунду, для перехода датчика в активное состояние
+  WaterServo.attach(2);
+  WindowServo.attach(3);
 }
 void loop() {
   String json = "{";
@@ -67,7 +69,7 @@ void loop() {
     max_tem_air_error = true;
     if (!is_window_open) {
       is_window_open = true;
-      WindowServo.write(90) // open
+      WindowServo.write(90); // open
       delay(1000);
     }
   } else {
@@ -75,7 +77,7 @@ void loop() {
       min_tem_air_error = true;
       if (is_window_open) {
         is_window_open = false;
-        WindowServo.write(0) // close
+        WindowServo.write(0); // close
         delay(1000);
       }
     } else {
@@ -88,7 +90,7 @@ void loop() {
     max_hum_soil_error = true;
     if (is_water_go) {
       is_water_go = false;
-      WaterServo.write(0) // close
+      WaterServo.write(0); // close
       delay(1000);
     }
   } else {
@@ -98,14 +100,14 @@ void loop() {
         if (water_lvl < min_water_lvl) {
           min_water_lvl_error = true;
           is_water_go = false;
-          WaterServo.write(0) //close
+          WaterServo.write(0); //close
           delay(1000);
         }
       } else {
         if (water_lvl >= min_water_lvl) {
           min_water_lvl_error = false;
           is_water_go = true;
-          WaterServo.write(90) // open
+          WaterServo.write(90); // open
           delay(1000);
         } else {
           min_water_lvl_error = true;
